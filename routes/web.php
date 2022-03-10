@@ -62,3 +62,10 @@ Route::get('/categories/delete/{id}','App\Http\Controllers\CategoryController@de
 //Authentication
 Route::get('/register','App\Http\Controllers\AuthController@register')->name('auth.register');
 Route::post('/handle-register','App\Http\Controllers\AuthController@handleRegister')->name('auth.handle-register');
+
+// Login
+Route::get('/login','App\Http\Controllers\AuthController@login')->name('auth.login');
+Route::post('/handle-login','App\Http\Controllers\AuthController@handleLogin')->name('auth.handle-login');
+
+// Logout
+Route::get('/logout','App\Http\Controllers\AuthController@logout')->name('auth.logout');

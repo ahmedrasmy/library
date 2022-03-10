@@ -44,7 +44,10 @@
                 <a class="nav-link p-2 p-lg-3" href="{{route('auth.register')}}">Register</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link p-2 p-lg-3" href="#">Contact</a>
+                <a class="nav-link p-2 p-lg-3" href="{{route('auth.login')}}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link p-2 p-lg-3" href="{{route('auth.logout')}}">Logout</a>
               </li>
             </ul>
           </div>
