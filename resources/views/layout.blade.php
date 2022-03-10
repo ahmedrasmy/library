@@ -41,7 +41,7 @@
                 <a class="nav-link p-2 p-lg-3" href="{{route('categories.index')}}">Categories</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link p-2 p-lg-3" href="#">About</a>
+                <a class="nav-link p-2 p-lg-3" href="{{route('auth.register')}}">Register</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link p-2 p-lg-3" href="#">Contact</a>
