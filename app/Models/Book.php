@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\This;
 
 class Book extends Model
 {
@@ -11,4 +12,9 @@ class Book extends Model
     protected $fillable=[
         'title','desc','img'
     ];
+    //book belongsToMany categories
+    public function categories()
+    {
+        return $this-> belongsToMany('App\Models\Category');
+    }
 }
