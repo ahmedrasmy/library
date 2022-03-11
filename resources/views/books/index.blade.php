@@ -3,6 +3,15 @@
     All Books
 @endsection
 @section('content')
+@auth
+    <h2>Notes:</h2>
+    @foreach(Auth::user()->notes as $note)
+        <p>{{ $note->content }}</p>
+    @endforeach
+    <a href="{{route('notes.create')}}" class="btn btn-info">Add New Note</a>
+
+@endauth
+
 <h1>All Books</h1>
 @auth
     <a href="{{route('books.create')}}" class="btn btn-primary">Create</a>
@@ -14,7 +23,9 @@
     <a href="{{route('books.show',$book->id)}}" class="btn btn-primary">Show</a>
     @auth 
         <a href="{{route('books.edit',$book->id)}}" class="btn btn-success">Edit</a>
-        <a href="{{route('books.delete',$book->id)}}" class="btn btn-danger">Delete</a>
+        @if (Auth::user()->is_admin==1)
+            <a href="{{route('books.delete',$book->id)}}" class="btn btn-danger">Delete</a>
+        @endif
     @endauth
 @endforeach
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Category;
 
 class BookController extends Controller
 {
@@ -19,7 +20,8 @@ class BookController extends Controller
         return view('books/show',compact('book'));
     }
     public function create(){
-        return view('books/create');
+        $categories=Category::select('id', 'name')->get();
+        return view('books/create' , compact('categories'));
     }
     public function store(Request $request){
         // Validation 
@@ -27,24 +29,32 @@ class BookController extends Controller
             [
                 'title'=>'required|string|max:100',
                 'desc'=>'required|string',
-                'img' =>'required|image|mimes:jpg,bmp,png'
+                'img' =>'required|image|mimes:jpg,bmp,png',
+                'categories_ids' => 'required',
+                'categories_ids.*' => 'exists:categories,id',
             ]
             );
+        
         // Move Img to folder uplpads books 
         $img=$request->file('img');
         $ext=$img->getClientOriginalExtension();
         $name="book- ". uniqid() .".$ext";
         $img->move(public_path('uploads/books'),$name);
-        Book::create([
+        // add to DB
+        $book=Book::create(
+        [
             'title' => $request->title,
             'desc'  => $request->desc,
             'img'   =>$name
         ]);
+        $book->categories()->sync($request->categories_ids);
+
         return redirect(route('books.index'));
     }
     public function edit($id){
         $book =Book::findOrFail($id);
-        return view('books/edit',compact('book'));
+        $categories=Category::select('id', 'name')->get();
+        return view('books/edit',compact('book','categories'));
     }
     public function update(Request $request,$id){
         // Validation 
@@ -52,7 +62,9 @@ class BookController extends Controller
             [
                 'title'=>'required|string|max:100',
                 'desc'=>'required|string',
-                'img' =>'nullable|image|mimes:jpg,bmp,png'
+                'img' =>'nullable|image|mimes:jpg,bmp,png',
+                'categories_ids' => 'required',
+                'categories_ids.*' => 'exists:categories,id',
             ]
             );
         $book=Book::findOrFail($id);
@@ -73,6 +85,7 @@ class BookController extends Controller
             'desc'=>$request->desc,
             'img'=>$name
         ]);
+        $book->categories()->sync($request->categories_ids);
         return redirect(route('books.index'));
     }
     public function delete($id){

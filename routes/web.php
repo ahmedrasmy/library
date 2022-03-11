@@ -48,6 +48,10 @@ Route::middleware('isLogin')->group(function()
     // Logout
 
     Route::get('/logout','App\Http\Controllers\AuthController@logout')->name('auth.logout');
+
+    // Create Note For users
+    Route::get('/notes/create','App\Http\Controllers\NoteController@create')->name('notes.create');
+    Route::post('/notes/store','App\Http\Controllers\NoteController@store')->name('notes.store');
 });
 
 //Is Admin

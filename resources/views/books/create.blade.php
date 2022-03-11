@@ -21,6 +21,16 @@
       <label for="img" class="form-label">Img</label>
       <input class="form-control" type="file" id="img" name='img'>
     </div>
+    <p>Select Categories: </p>
+    @foreach ($categories as $category)
+      <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="categories_ids[]" value="{{$category->id}}" id="flexCheckDefault">
+      <label class="form-check-label" for="flexCheckDefault">
+        {{ $category->name }}
+      </label>
+    </div>
+    @endforeach
+    <br>
     <button type="submit" class="btn btn-primary ">Add</button>
   </form>
 @endsection
