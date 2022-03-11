@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,3 +91,31 @@ Route::middleware('isGuest')->group(function()
 
 });
 
+
+Route::get('/login/github/redirect', function () {
+    return Socialite::driver('github')->redirect();
+})->name('auth.github.redirect');
+ 
+Route::get('/login/github/callback', function () {
+    $user = Socialite::driver('github')->user();
+    // dd($user->email);
+    // $user->token
+    $email=$user->email;
+    $db_user=User::where('email','=',$email)->first();
+    if($db_user==null){
+        $registered_user = User::create([
+            'name' =>$user-> name,
+            'email' =>$user-> email,
+            'password' =>Hash::make('123456') ,
+            'oauth_token' =>$user->token,
+
+        ]);
+
+        Auth::login($registered_user);
+    }
+    else
+    {
+        Auth::login($db_user);
+    }
+    return redirect( route('books.index') );
+})->name('auth.github.callback');

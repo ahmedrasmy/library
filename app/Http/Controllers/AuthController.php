@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
-
+use Laravel\Socialite\Facades\Socialite;
 class AuthController extends Controller
 {
     public function register()
@@ -67,4 +67,6 @@ class AuthController extends Controller
         Auth::logout();
         return back();
     }
+
+    
 }

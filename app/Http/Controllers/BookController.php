@@ -92,7 +92,7 @@ class BookController extends Controller
         $book=Book::findOrFail($id);
         if($book->img!==null)
         {
-            unlink(public_path('uploads/books/').$book->img);
+            // unlink(public_path('uploads/books/').$book->img);
         }
         $book->delete();
         return redirect(route('books.index'));

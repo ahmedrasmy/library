@@ -22,13 +22,15 @@
       <input class="form-control" type="file" id="img" name='img'>
     </div>
     <p>Select Categories: </p>
+    <?php $i=1 ?>
     @foreach ($categories as $category)
       <div class="form-check">
-      <input class="form-check-input" type="checkbox" name="categories_ids[]" value="{{$category->id}}" id="flexCheckDefault">
-      <label class="form-check-label" for="flexCheckDefault">
+      <input class="form-check-input" type="checkbox" name="categories_ids[]" value="{{$category->id}}" id="check-{{$i}}">
+      <label class="form-check-label" for="check-{{$i}}">
         {{ $category->name }}
       </label>
     </div>
+    <?php $i++ ?>
     @endforeach
     <br>
     <button type="submit" class="btn btn-primary ">Add</button>
