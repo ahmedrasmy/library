@@ -16,20 +16,11 @@ class ApiBookController extends Controller
    }
 
    public function show($id){
-       $book=Book::findOrFail($id);
+       $book=Book::with('categories')->findOrFail($id);
        return response()->json($book);
    }
    public function store(Request $request){
-    // // Validation
-    // $request->validate(
-    //     [
-    //         'title'=>'required|string|max:100',
-    //         'desc'=>'required|string',
-    //         'img' =>'required|image|mimes:jpg,bmp,png',
-    //         'categories_ids' => 'required',
-    //         'categories_ids.*' => 'exists:categories,id',
-    //     ]
-    //     );
+    
     // validation to api 
     $validator = Validator::make($request->all(), 
     [
@@ -61,16 +52,7 @@ class ApiBookController extends Controller
     return response()->json($success);
 }
 public function update(Request $request,$id){
-    // Validation 
-    // $request->validate(
-    //     [
-    //         'title'=>'required|string|max:100',
-    //         'desc'=>'required|string',
-    //         'img' =>'nullable|image|mimes:jpg,bmp,png',
-    //         'categories_ids' => 'required',
-    //         'categories_ids.*' => 'exists:categories,id',
-    //     ]
-    //     );
+    
        // validation to api 
        $validator = Validator::make($request->all(), 
        [

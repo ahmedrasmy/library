@@ -71,7 +71,8 @@ Route::middleware('isLoginAdmin')->group(function()
 // Read 
 Route::get('/books','App\Http\Controllers\BookController@index')->name('books.index');
 Route::get('/books/show/{id}','App\Http\Controllers\BookController@show')->name('books.show');
-
+// search route 
+Route::get('/books/search','App\Http\Controllers\BookController@search')->name('books.search');
 
 // Read Categories
 Route::get('/categories','App\Http\Controllers\CategoryController@index')->name('categories.index');

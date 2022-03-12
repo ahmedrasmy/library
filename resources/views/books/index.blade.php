@@ -3,6 +3,7 @@
     All Books
 @endsection
 @section('content')
+<input type="search" class="search" placeholder="Search Book" name="search" id="keyword">
 @auth
     <h2>Notes:</h2>
     @foreach(Auth::user()->notes as $note)
@@ -16,7 +17,9 @@
 @auth
     <a href="{{route('books.create')}}" class="btn btn-primary">Create</a>
 @endauth
+<div class="allBooks" id="allBooks">
 @foreach($books as $book)
+    
     <hr>
    <a href="{{route('books.show',$book->id)}}"><h3>{{ $book->title }}</h3></a>
     <p>{{ $book->desc}}</p>
@@ -27,12 +30,44 @@
             <a href="{{route('books.delete',$book->id)}}" class="btn btn-danger">Delete</a>
         @endif
     @endauth
+
 @endforeach
+</div>
 
-<nav aria-label="..." class="mt-5">
-    <ul class="pagination">
-      {{$books->render()}}
-    </ul>
-  </nav>
+@endsection
 
+@section('scripts')
+    <script>
+        let inputSearch = document.getElementById('keyword');
+        var allBooks = document.getElementById('allBooks');
+
+        inputSearch.addEventListener("keyup", function(){
+               let keyword = inputSearch.value;
+               let url = "{{ route('books.search') }}" + "?keyword=" + keyword;
+               allBooks.innerHTML="";
+               let xhr = new XMLHttpRequest();
+               xhr.open('GET', url, true);
+
+               xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var result = xhr.responseText;
+                    var books  = JSON.parse(result);
+                    for(let book of books)
+                    {
+                        let myH3 = document.createElement("h3");
+                        let myTextH3 = document.createTextNode(book.title);
+                        myH3.appendChild(myTextH3);
+                        let myP = document.createElement("p");
+                        let myTextP = document.createTextNode(book.desc);
+                        myP.appendChild(myTextP);
+                        allBooks.appendChild(myH3);
+                        allBooks.appendChild(myP);
+                    }
+                }
+             }
+
+                xhr.send();
+                //    console.log(keyword);
+                });
+    </script>
 @endsection

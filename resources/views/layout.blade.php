@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <link rel="stylesheet" href="{{asset('css/all.min.css')}}" />
+    {{-- <link rel="stylesheet" href="{{asset('css/all.min.css')}}" /> --}}
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" />
     <link rel="stylesheet" href="{{asset('css/library.css')}}" />
     @yield('styles')
@@ -40,6 +40,7 @@
               <li class="nav-item">
                 <a class="nav-link p-2 p-lg-3" href="{{route('categories.index')}}">Categories</a>
               </li>
+              
               @guest    
               
                   <li class="nav-item">
@@ -61,6 +62,7 @@
 
               @endauth
             </ul>
+  
           </div>
         </div>
       </nav>
@@ -72,6 +74,6 @@
 
     @yield('scripts')
     <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{asset('js/all.min.js')}}"></script>
+    {{-- <script src="{{asset('js/all.min.js')}}"></script> --}}
 </body>
 </html>

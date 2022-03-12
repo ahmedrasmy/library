@@ -14,10 +14,10 @@
     <a href="{{route('categories.delete',$category->id)}}" class="btn btn-danger">Delete</a>
 @endforeach
 
-<nav aria-label="..." class="mt-5">
+{{-- <nav aria-label="..." class="mt-5">
     <ul class="pagination">
       {{$categories->render()}}
     </ul>
-  </nav>
+  </nav> --}}
 
 @endsection
