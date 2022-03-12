@@ -3,17 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// API Books
+// Show All Books
+Route::get('/books','App\Http\Controllers\ApiBookController@index');
+// Show One Book
+Route::get('/books/show/{id}','App\Http\Controllers\ApiBookController@show');
+//Store One Book
+Route::post('/books/store','App\Http\Controllers\ApiBookController@store');
+//update One Book
+Route::post('/books/update/{id}','App\Http\Controllers\ApiBookController@update');
+//Delete book
+Route::get('/books/delete/{id}','App\Http\Controllers\ApiBookController@delete');
