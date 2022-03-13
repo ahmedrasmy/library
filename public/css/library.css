@@ -9,9 +9,15 @@
 /* Start Nav  */
 
 .navbar {
-    background-color: var(--red-color);
+    background-color: var(--dark-color);
 }
-
+.search {
+    padding: 5px;
+    border: 1px solid var(--dark-color);
+}
+.search:focus {
+    outline: none;
+}
 .navbar .navbar-brand,
 .navbar .navbar-nav .nav-link {
     color: white;
