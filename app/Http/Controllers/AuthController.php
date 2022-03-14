@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RegisterMail;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 class AuthController extends Controller
@@ -36,6 +38,8 @@ class AuthController extends Controller
         // Login
         Auth::login($user);
 
+        //send email
+        // Mail::to($request ->email)->send(new RegisterMail($request ->name));
         // Redirect To Books
         return Redirect(route('books.index'));
     }

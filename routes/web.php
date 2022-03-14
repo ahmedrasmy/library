@@ -23,8 +23,11 @@ Route::get('/', function () {
 });
 
 
-Route::middleware('isLogin')->group(function()
+//language
+Route::middleware('setLang')->group(function()
 {
+    Route::middleware('isLogin')->group(function()
+    {
     // Create
 
     Route::get('/books/create','App\Http\Controllers\BookController@create')->name('books.create');
@@ -56,67 +59,77 @@ Route::middleware('isLogin')->group(function()
     // Create Note For users
     Route::get('/notes/create','App\Http\Controllers\NoteController@create')->name('notes.create');
     Route::post('/notes/store','App\Http\Controllers\NoteController@store')->name('notes.store');
-});
+    });
 
-//Is Admin
-Route::middleware('isLoginAdmin')->group(function()
-{
-    //Delete book
-    Route::get('/books/delete/{id}','App\Http\Controllers\BookController@delete')->name('books.delete');
-
-    //Delete Categories
-    Route::get('/categories/delete/{id}','App\Http\Controllers\CategoryController@delete')->name('categories.delete');
-
-});
-// Read 
-Route::get('/books','App\Http\Controllers\BookController@index')->name('books.index');
-Route::get('/books/show/{id}','App\Http\Controllers\BookController@show')->name('books.show');
-// search route 
-Route::get('/books/search','App\Http\Controllers\BookController@search')->name('books.search');
-
-// Read Categories
-Route::get('/categories','App\Http\Controllers\CategoryController@index')->name('categories.index');
-Route::get('/categories/show/{id}','App\Http\Controllers\CategoryController@show')->name('categories.show');
-
-
-Route::middleware('isGuest')->group(function()
-{
-    //Authentication
-    //register
-    Route::get('/register','App\Http\Controllers\AuthController@register')->name('auth.register');
-    Route::post('/handle-register','App\Http\Controllers\AuthController@handleRegister')->name('auth.handle-register');
-
-    // Login
-    Route::get('/login','App\Http\Controllers\AuthController@login')->name('auth.login');
-    Route::post('/handle-login','App\Http\Controllers\AuthController@handleLogin')->name('auth.handle-login');
-
-});
-
-
-Route::get('/login/github/redirect', function () {
-    return Socialite::driver('github')->redirect();
-})->name('auth.github.redirect');
- 
-Route::get('/login/github/callback', function () {
-    $user = Socialite::driver('github')->user();
-    // dd($user->email);
-    // $user->token
-    $email=$user->email;
-    $db_user=User::where('email','=',$email)->first();
-    if($db_user==null){
-        $registered_user = User::create([
-            'name' =>$user-> name,
-            'email' =>$user-> email,
-            'password' =>Hash::make('123456') ,
-            'oauth_token' =>$user->token,
-
-        ]);
-
-        Auth::login($registered_user);
-    }
-    else
+    //Is Admin
+    Route::middleware('isLoginAdmin')->group(function()
     {
-        Auth::login($db_user);
-    }
-    return redirect( route('books.index') );
-})->name('auth.github.callback');
+        //Delete book
+        Route::get('/books/delete/{id}','App\Http\Controllers\BookController@delete')->name('books.delete');
+
+        //Delete Categories
+        Route::get('/categories/delete/{id}','App\Http\Controllers\CategoryController@delete')->name('categories.delete');
+
+    });
+    // Read 
+    Route::get('/books','App\Http\Controllers\BookController@index')->name('books.index');
+    Route::get('/books/show/{id}','App\Http\Controllers\BookController@show')->name('books.show');
+    // search route 
+    Route::get('/books/search','App\Http\Controllers\BookController@search')->name('books.search');
+
+    // Read Categories
+    Route::get('/categories','App\Http\Controllers\CategoryController@index')->name('categories.index');
+    Route::get('/categories/show/{id}','App\Http\Controllers\CategoryController@show')->name('categories.show');
+
+
+    Route::middleware('isGuest')->group(function()
+    {
+        //Authentication
+        //register
+        Route::get('/register','App\Http\Controllers\AuthController@register')->name('auth.register');
+        Route::post('/handle-register','App\Http\Controllers\AuthController@handleRegister')->name('auth.handle-register');
+
+        // Login
+        Route::get('/login','App\Http\Controllers\AuthController@login')->name('auth.login');
+        Route::post('/handle-login','App\Http\Controllers\AuthController@handleLogin')->name('auth.handle-login');
+
+    });
+
+
+    Route::get('/login/github/redirect', function () {
+        return Socialite::driver('github')->redirect();
+    })->name('auth.github.redirect');
+    
+    Route::get('/login/github/callback', function () {
+        $user = Socialite::driver('github')->user();
+        // dd($user->email);
+        // $user->token
+        $email=$user->email;
+        $db_user=User::where('email','=',$email)->first();
+        if($db_user==null){
+            $registered_user = User::create([
+                'name' =>$user-> name,
+                'email' =>$user-> email,
+                'password' =>Hash::make('123456') ,
+                'oauth_token' =>$user->token,
+
+            ]);
+
+            Auth::login($registered_user);
+        }
+        else
+        {
+            Auth::login($db_user);
+        }
+        return redirect( route('books.index') );
+    })->name('auth.github.callback');
+
+
+
+});
+
+
+// en
+Route::get('/lang/en','App\Http\Controllers\LangController@en')->name('lang.en');
+//ar
+Route::get('/lang/ar','App\Http\Controllers\LangController@ar')->name('lang.ar');
