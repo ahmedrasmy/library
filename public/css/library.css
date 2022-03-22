@@ -5,6 +5,25 @@
     --yellow-color: #ffc400;
     --section-color: #eff7fa;
 }
+.main-btn {
+    color: white;
+    background-color: var(--dark-color);
+    padding: 0.5rem 1rem;
+}
+.main-btn:hover {
+    color: var(--green-color);
+    border: 1px solid var(--green-color);
+}
+.main-title::before {
+    content: "";
+    width: 120px;
+    height: 2px;
+    background-color: var(--green-color);
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 /* Start Nav  */
 
@@ -38,3 +57,34 @@
     box-shadow: none;
 }
 /* End Nav  */
+
+/* Start Landing  */
+.landing {
+    min-height: calc(100vh - 78px);
+    background-color: var(--dark-color);
+}
+
+/* End Landing  */
+/* Start search */
+.searchInput {
+    background-color: var(--yellow-color);
+}
+.searchInput input[type="search"] {
+    border: none;
+    border-bottom: 1px solid white;
+}
+.searchInput input[type="search"]:focus {
+    outline: none;
+}
+.searchInput input[type="submit"] {
+    background-color: var(--dark-color);
+    color: var(--yellow-color);
+}
+/* End search */
+.add-book,
+.edit-book {
+    background-color: var(--dark-color);
+}
+.form {
+    background-color: #eee;
+}

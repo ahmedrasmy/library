@@ -18,14 +18,16 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 
 //language
 Route::middleware('setLang')->group(function()
 {
+    Route::get('/index', function () {
+        return view('index');
+    })->name('index');
+
     Route::middleware('isLogin')->group(function()
     {
     // Create
@@ -96,14 +98,12 @@ Route::middleware('setLang')->group(function()
     });
 
 
-    Route::get('/login/github/redirect', function () {
+    Route::get('/index/login/github/redirect', function () {
         return Socialite::driver('github')->redirect();
     })->name('auth.github.redirect');
     
-    Route::get('/login/github/callback', function () {
+    Route::get('/index/login/github/callback', function () {
         $user = Socialite::driver('github')->user();
-        // dd($user->email);
-        // $user->token
         $email=$user->email;
         $db_user=User::where('email','=',$email)->first();
         if($db_user==null){

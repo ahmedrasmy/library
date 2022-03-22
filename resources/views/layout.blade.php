@@ -12,13 +12,8 @@
 
 </head>
 <body>
-
    <x-navbar></x-navbar> 
-    <div class="container py-5">
-        @yield('content')
-    </div>
-   
-
+    @yield('content')
     @yield('scripts')
     <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('js/all.min.js')}}"></script>

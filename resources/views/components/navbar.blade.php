@@ -1,7 +1,7 @@
 <!-- Start Nav  -->
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Library</a>
+      <a class="navbar-brand" href="{{route('index')}}">@lang('site.logo')</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -16,7 +16,7 @@
       <div class="collapse navbar-collapse" id="main">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link p-2 p-lg-3 active" aria-current="page" href="#"
+            <a class="nav-link p-2 p-lg-3 active" aria-current="page" href="{{route('index')}}"
               >@lang('site.home')</a
             >
           </li>
