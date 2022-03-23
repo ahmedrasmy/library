@@ -36,4 +36,10 @@ return [
         'redirect' => 'http://localhost/library/public/index/login/github/callback',
     ],
 
+    'facebook' => [
+        'client_id' => env ( 'FB_CLIENT_ID' ),
+        'client_secret' => env ( 'FB_CLIENT_SECRET' ),
+        'redirect' => 'http://localhost/library/public/index/login/facebook/callback'
+    ],
+
 ];

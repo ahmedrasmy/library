@@ -21,8 +21,10 @@
               <input type="password" name="password" class="form-control" id="password" value="{{old('password')}}" >
             </div>
           
-          <button type="submit" class="btn main-btn ">Login</button>
-          <a href="{{ route('auth.github.redirect') }}" class="btn main-btn">Sign Up With Github</a>
+          <button type="submit" class="btn main-btn mb-3">Login</button> <br>
+          <a href="{{ url('index/login/github/redirect') }}" class="btn main-btn">Sign Up With Github</a>
+          <a href="{{ url('index/login/facebook/redirect') }}" class="btn main-btn">Sign Up With facebook</a>
+
 
         </form>
     </div>

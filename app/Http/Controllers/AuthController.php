@@ -72,16 +72,16 @@ class AuthController extends Controller
         return back();
     }
 
-    // redirect Socialite
-    public function redirectSocialite()
+    // redirect Socialite Facebook or Github
+    public function redirectSocialite($service)
     {
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver($service)->redirect();
     }
 
-    // callback Socialite
-    public function callbackSocialite()
+    // callback Socialite Facebook or Github
+    public function callbackSocialite($service)
     {
-        $user = Socialite::driver('github')->user();
+        $user = Socialite::driver($service)->user();
         $email=$user->email;
         $db_user=User::where('email','=',$email)->first();
         if($db_user==null)

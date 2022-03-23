@@ -127,14 +127,12 @@ Route::middleware('setLang')->group(function()
 
     });
 
-    // Login With Github
-    Route::prefix('/index/login/github')->name('auth.github.')->controller(AuthController::class)->group(function(){
-        Route::get('/redirect','redirectSocialite')->name('redirect');
-        Route::get('/callback','callbackSocialite')->name('callback');
+    // Login With Github or facebook
+    Route::prefix('/index/login/{service}')->controller(AuthController::class)->group(function(){
+        Route::get('/redirect','redirectSocialite');
+        Route::get('/callback','callbackSocialite');
 
     });
-
-    
 
 
 });
