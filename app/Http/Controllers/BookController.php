@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\User;
 use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class BookController extends Controller
 {
     //
+    public function home()
+    {
+        return view('index');
+    }
     public function index(){
         $books=Book::orderBy('id','DESC')->get();
 
@@ -102,7 +110,10 @@ class BookController extends Controller
         $book->delete();
         return redirect(route('books.index'));
     }
+    
 }
+
+
 
 
 // $books=Book::select('title','desc')->get();

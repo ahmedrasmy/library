@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LangController;
+use App\Http\Controllers\NoteController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,48 +25,67 @@ use Laravel\Socialite\Facades\Socialite;
 //language
 Route::middleware('setLang')->group(function()
 {
-    Route::get('/index', function () {
-        return view('index');
-    })->name('index');
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/index','App\Http\Controllers\BookController@home')->name('index');
 
     Route::middleware('isLogin')->group(function()
     {
-    // Create
 
-    Route::get('/books/create','App\Http\Controllers\BookController@create')->name('books.create');
+        Route::prefix('/books')->name('books.')->controller(BookController::class)->group(function () 
+        {
 
-    Route::post('/books/store','App\Http\Controllers\BookController@store')->name('books.store');
+             // Create
 
-    //Update
+            Route::get('/create','create')->name('create');
 
-    Route::get('/books/edit/{id}','App\Http\Controllers\BookController@edit')->name('books.edit');
+            Route::post('/store','store')->name('store');
 
-    Route::post('/books/update/{id}','App\Http\Controllers\BookController@update')->name('books.update');
+            //Update
 
-    // Create Categories
+            Route::get('/edit/{id}','edit')->name('edit');
 
-    Route::get('/categories/create','App\Http\Controllers\CategoryController@create')->name('categories.create');
+            Route::post('/update/{id}','update')->name('update');
+        
+            
+        });
 
-    Route::post('/categories/store','App\Http\Controllers\CategoryController@store')->name('categories.store');
+       
+        Route::prefix('/categories')->name('categories.')->controller(CategoryController::class)->group(function () {
+            // Create Categories
 
-    //Update Categories
+            Route::get('/create','create')->name('create');
 
-    Route::get('/categories/edit/{id}','App\Http\Controllers\CategoryController@edit')->name('categories.edit');
+            Route::post('/store','store')->name('store');
 
-    Route::post('/categories/update/{id}','App\Http\Controllers\CategoryController@update')->name('categories.update');
+            //Update Categories
 
-    // Logout
+            Route::get('/edit/{id}','edit')->name('edit');
 
-    Route::get('/logout','App\Http\Controllers\AuthController@logout')->name('auth.logout');
+            Route::post('/update/{id}','update')->name('update');
+            
+        });
+        
 
-    // Create Note For users
-    Route::get('/notes/create','App\Http\Controllers\NoteController@create')->name('notes.create');
-    Route::post('/notes/store','App\Http\Controllers\NoteController@store')->name('notes.store');
+        // Logout
+
+        Route::get('/logout','App\Http\Controllers\AuthController@logout')->name('auth.logout');
+
+        Route::prefix('/notes')->name('notes.')->controller(NoteController::class)->group(function () {
+            // Create Note For users
+            Route::get('/create','create')->name('create');
+            Route::post('/store','store')->name('store');
+                
+        });
+
+        
     });
 
     //Is Admin
     Route::middleware('isLoginAdmin')->group(function()
     {
+        
         //Delete book
         Route::get('/books/delete/{id}','App\Http\Controllers\BookController@delete')->name('books.delete');
 
@@ -73,63 +93,58 @@ Route::middleware('setLang')->group(function()
         Route::get('/categories/delete/{id}','App\Http\Controllers\CategoryController@delete')->name('categories.delete');
 
     });
-    // Read 
-    Route::get('/books','App\Http\Controllers\BookController@index')->name('books.index');
-    Route::get('/books/show/{id}','App\Http\Controllers\BookController@show')->name('books.show');
-    // search route 
-    Route::get('/books/search','App\Http\Controllers\BookController@search')->name('books.search');
 
-    // Read Categories
-    Route::get('/categories','App\Http\Controllers\CategoryController@index')->name('categories.index');
-    Route::get('/categories/show/{id}','App\Http\Controllers\CategoryController@show')->name('categories.show');
+    Route::prefix('/books')->name('books.')->controller(BookController::class)->group(function () {
+        // Read Book
+        Route::get('','index')->name('index');
+        Route::get('/show/{id}','show')->name('show');
+        // search route 
+        Route::get('/search','search')->name('search');
 
+        
+    });
 
-    Route::middleware('isGuest')->group(function()
+    Route::prefix('/categories')->name('categories.')->controller(CategoryController::class)->group(function () {
+        // Read Categories
+        Route::get('','index')->name('index');
+        Route::get('/show/{id}','show')->name('show');
+
+        
+    });
+
+    
+
+    Route::name('auth.')->controller(AuthController::class)->middleware('isGuest')->group(function()
     {
         //Authentication
         //register
-        Route::get('/register','App\Http\Controllers\AuthController@register')->name('auth.register');
-        Route::post('/handle-register','App\Http\Controllers\AuthController@handleRegister')->name('auth.handle-register');
+        Route::get('/register','register')->name('register');
+        Route::post('/handle-register','handleRegister')->name('handle-register');
 
         // Login
-        Route::get('/login','App\Http\Controllers\AuthController@login')->name('auth.login');
-        Route::post('/handle-login','App\Http\Controllers\AuthController@handleLogin')->name('auth.handle-login');
+        Route::get('/login','login')->name('login');
+        Route::post('/handle-login','handleLogin')->name('handle-login');
 
     });
 
+    // Login With Github
+    Route::prefix('/index/login/github')->name('auth.github.')->controller(AuthController::class)->group(function(){
+        Route::get('/redirect','redirectSocialite')->name('redirect');
+        Route::get('/callback','callbackSocialite')->name('callback');
 
-    Route::get('/index/login/github/redirect', function () {
-        return Socialite::driver('github')->redirect();
-    })->name('auth.github.redirect');
+    });
+
     
-    Route::get('/index/login/github/callback', function () {
-        $user = Socialite::driver('github')->user();
-        $email=$user->email;
-        $db_user=User::where('email','=',$email)->first();
-        if($db_user==null){
-            $registered_user = User::create([
-                'name' =>$user-> name,
-                'email' =>$user-> email,
-                'password' =>Hash::make('123456') ,
-                'oauth_token' =>$user->token,
-
-            ]);
-
-            Auth::login($registered_user);
-        }
-        else
-        {
-            Auth::login($db_user);
-        }
-        return redirect( route('books.index') );
-    })->name('auth.github.callback');
-
 
 
 });
 
 
-// en
-Route::get('/lang/en','App\Http\Controllers\LangController@en')->name('lang.en');
-//ar
-Route::get('/lang/ar','App\Http\Controllers\LangController@ar')->name('lang.ar');
+Route::prefix('/lang')->name('lang.')->controller(LangController::class)->group(function()
+{
+    // en
+    Route::get('/en','en')->name('en');
+    //ar
+    Route::get('/ar','ar')->name('ar');
+
+});

@@ -39,7 +39,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         //send email
-        // Mail::to($request ->email)->send(new RegisterMail($request ->name));
+        Mail::to($request ->email)->send(new RegisterMail($request ->name));
         // Redirect To Books
         return Redirect(route('books.index'));
     }
@@ -72,5 +72,35 @@ class AuthController extends Controller
         return back();
     }
 
+    // redirect Socialite
+    public function redirectSocialite()
+    {
+        return Socialite::driver('github')->redirect();
+    }
+
+    // callback Socialite
+    public function callbackSocialite()
+    {
+        $user = Socialite::driver('github')->user();
+        $email=$user->email;
+        $db_user=User::where('email','=',$email)->first();
+        if($db_user==null)
+        {
+            $registered_user = User::create([
+                'name' =>$user-> name,
+                'email' =>$user-> email,
+                'password' =>Hash::make('123456') ,
+                'oauth_token' =>$user->token,
+
+            ]);
+
+            Auth::login($registered_user);
+        }
+        else
+        {
+            Auth::login($db_user);
+        }
+        return redirect( route('books.index') );
+    }
     
 }

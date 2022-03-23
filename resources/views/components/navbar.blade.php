@@ -1,7 +1,7 @@
 <!-- Start Nav  -->
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="{{route('index')}}">@lang('site.logo')</a>
+      <a class="navbar-brand" href="{{route('index')}}">{{ __('site.logo') }}</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -17,15 +17,15 @@
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link p-2 p-lg-3 active" aria-current="page" href="{{route('index')}}"
-              >@lang('site.home')</a
+              >{{ __('site.home') }}</a
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link p-2 p-lg-3" href="{{route('books.index')}}">@lang('site.books')</a>
+            <a class="nav-link p-2 p-lg-3" href="{{route('books.index')}}">{{ __('site.books') }}</a>
           </li>
           <li class="nav-item">
           <div class="dropdown mt-2">
-            <button  class="btn btn-secondary bg-transparent nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">@lang('site.cats')</button>
+            <button  class="btn btn-secondary bg-transparent nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">{{ __('site.cats') }}</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item " href="{{ route('categories.index') }}">All Categories </a></li>            
                 @foreach ($cats as $cat)
@@ -39,10 +39,10 @@
           @guest    
           
               <li class="nav-item d-flex ">
-                <a class="nav-link p-2 p-lg-3" href="{{route('auth.register')}}">@lang('site.register')</a>
+                <a class="nav-link p-2 p-lg-3" href="{{route('auth.register')}}">{{ __('site.register') }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link p-2 p-lg-3" href="{{route('auth.login')}}">@lang('site.login')</a>
+                <a class="nav-link p-2 p-lg-3" href="{{route('auth.login')}}">{{ __('site.login') }}</a>
               </li>
 
           @endguest
@@ -52,13 +52,13 @@
               </li>
 
               <li class="nav-item">
-                <a class="nav-link p-2 p-lg-3" href="{{route('auth.logout')}}">@lang('site.logout')</a>
+                <a class="nav-link p-2 p-lg-3" href="{{route('auth.logout')}}">{{ __('site.logout') }}</a>
               </li>
 
           @endauth
           
           <li class="nav-item dropdown mt-2">
-              <button  class="btn btn-secondary bg-transparent nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">@lang('site.lang')</button>
+              <button  class="btn btn-secondary bg-transparent nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">{{ __('site.lang') }}</button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                   <li><a class="dropdown-item " href="{{ route('lang.ar') }}">AR</a></li>            
                   <li><a class="dropdown-item " href="{{ route('lang.en') }}">EN</a></li>            
