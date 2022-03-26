@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LangController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\CategoryController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
 /*
@@ -23,7 +24,11 @@ use App\Http\Controllers\NoteController;
 
 
 //language
-Route::middleware('setLang')->group(function()
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+    ], function()
 {
     Route::get('/', function () {
         return view('welcome');
@@ -137,12 +142,3 @@ Route::middleware('setLang')->group(function()
 
 });
 
-
-Route::prefix('/lang')->name('lang.')->controller(LangController::class)->group(function()
-{
-    // en
-    Route::get('/en','en')->name('en');
-    //ar
-    Route::get('/ar','ar')->name('ar');
-
-});

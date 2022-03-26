@@ -60,8 +60,12 @@
           <li class="nav-item dropdown mt-2">
               <button  class="btn btn-secondary bg-transparent nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">{{ __('site.lang') }}</button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li><a class="dropdown-item " href="{{ route('lang.ar') }}">AR</a></li>            
-                  <li><a class="dropdown-item " href="{{ route('lang.en') }}">EN</a></li>            
+                  @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                      <li>
+                        <a class="dropdown-item " href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">{{ $properties['native'] }}</a>
+                          </a>
+                      </li>
+                  @endforeach            
               </ul>
           </li>
         </ul>
