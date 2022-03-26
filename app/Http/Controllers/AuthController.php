@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Mail\RegisterMail;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -17,15 +18,8 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function handleRegister(Request $request)
-    {   //Validation
-        $request->validate(
-            [
-                'name'  => 'required|string|max:100',
-                'email' => 'required|email|max:100',
-                'password'  => 'required|string|max:50|min:5'
-            ]
-            );
+    public function handleRegister(UserRequest $request)
+    {   
         // Store In DB
         $user=User::create(
             [
@@ -49,14 +43,8 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function handleLogin(Request $request)
-    {   //Validation
-        $request->validate(
-            [
-                'email' => 'required|email|max:100',
-                'password'  => 'required|string|max:50|min:5'
-            ]
-            );
+    public function handleLogin(UserRequest $request)
+    {   
         
         $is_login =Auth::attempt(['email'=>$request->email,'password'=>$request->password]);
         

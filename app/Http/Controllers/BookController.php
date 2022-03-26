@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Category;
@@ -36,18 +38,8 @@ class BookController extends Controller
         $categories=Category::select('id', 'name')->get();
         return view('books/create' , compact('categories'));
     }
-    public function store(Request $request){
-        // Validation 
-        $request->validate(
-            [
-                'title'=>'required|string|max:100',
-                'desc'=>'required|string',
-                'img' =>'required|image|mimes:jpg,bmp,png',
-                'categories_ids' => 'required',
-                'categories_ids.*' => 'exists:categories,id',
-            ]
-            );
-        
+    public function store(StoreBookRequest $request){
+
         // Move Img to folder uplpads books 
         $img=$request->file('img');
         $ext=$img->getClientOriginalExtension();
@@ -61,7 +53,7 @@ class BookController extends Controller
             'img'   =>$name
         ]);
         $book->categories()->sync($request->categories_ids);
-
+        
         return redirect(route('books.index'));
     }
     public function edit($id){
@@ -69,17 +61,8 @@ class BookController extends Controller
         $categories=Category::select('id', 'name')->get();
         return view('books/edit',compact('book','categories'));
     }
-    public function update(Request $request,$id){
-        // Validation 
-        $request->validate(
-            [
-                'title'=>'required|string|max:100',
-                'desc'=>'required|string',
-                'img' =>'nullable|image|mimes:jpg,bmp,png',
-                'categories_ids' => 'required',
-                'categories_ids.*' => 'exists:categories,id',
-            ]
-            );
+    public function update(UpdateBookRequest $request,$id){
+        
         $book=Book::findOrFail($id);
         $name=$book->img;
         // Move Img to folder uplpads books 

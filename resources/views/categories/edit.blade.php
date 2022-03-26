@@ -6,7 +6,6 @@
 @endsection
 
 @section('content')
-@include('inc.errors')
 <div class="edit-category">
   <div class="container"> 
     <div class="row py-5 ">
@@ -15,6 +14,9 @@
     <div class="mb-3">
       <label for="name" class="form-label">Title</label>
       <input type="text" name="name" class="form-control" id="name" value="{{old('name') ?? $category->name}}">
+      @error('name')
+            <small class="form-text text-danger">{{$message}}</small>
+      @enderror
     </div>
     <button type="submit" class="btn main-btn ">Edit Category</button>
   </form>

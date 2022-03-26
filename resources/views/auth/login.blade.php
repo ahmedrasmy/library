@@ -6,7 +6,6 @@
 @endsection
 
 @section('content')
-@include('inc.errors')
 <div class="login">
   <div class="container"> 
     <div class="row py-5 ">
@@ -15,10 +14,16 @@
           <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <input type="text" name="email" class="form-control" id="email" value="{{old('email')}}" >
+              @error('email')
+                  <small class="form-text text-danger">{{$message}}</small>
+              @enderror
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
               <input type="password" name="password" class="form-control" id="password" value="{{old('password')}}" >
+              @error('password')
+                  <small class="form-text text-danger">{{$message}}</small>
+              @enderror
             </div>
           
           <button type="submit" class="btn main-btn mb-3">Login</button> <br>

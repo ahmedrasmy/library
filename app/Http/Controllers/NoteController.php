@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NoteRequest;
 use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -13,13 +14,8 @@ class NoteController extends Controller
         return view('notes/create');
     }
 
-    public function store(Request $request){
-        //validation
-        $request->validate(
-            [
-            'content'=>'required|string'
-            ]
-                        );
+    public function store(NoteRequest $request){
+       
         Note::create(
             [
                 'content' => $request->content,

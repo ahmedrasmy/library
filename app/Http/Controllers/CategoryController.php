@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 use App\Models\Category;
 
@@ -21,15 +22,7 @@ class CategoryController extends Controller
     public function create(){
         return view('categories/create');
     }
-    public function store(Request $request){
-        // Validation 
-        $request->validate(
-            [
-                'name'=>'required|string|max:100',
-            
-            ]
-            );
-        
+    public function store(CategoryRequest $request){
         Category::create([
             'name' => $request->name,
         ]);
@@ -39,15 +32,9 @@ class CategoryController extends Controller
         $category =Category::findOrFail($id);
         return view('categories/edit',compact('category'));
     }
-    public function update(Request $request,$id){
-        // Validation 
-        $request->validate(
-            [
-                'name'=>'required|string|max:100',
-            ]
-            );
-        $category=Category::findOrFail($id);
+    public function update(CategoryRequest $request,$id){
         
+        $category=Category::findOrFail($id);
         $category->update([
             'name'=>$request->name,
         ]);

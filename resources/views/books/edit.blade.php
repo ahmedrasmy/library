@@ -6,7 +6,6 @@
 @endsection
 
 @section('content')
-@include('inc.errors')
 <div class="edit-book">
   <div class="container">
     <div class="row py-5 ">
@@ -16,14 +15,23 @@
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
       <input type="text" name="title" class="form-control" id="title" value="{{old('title') ?? $book->title}}">
+      @error('title')
+            <small class="form-text text-danger">{{$message}}</small>
+      @enderror
     </div>
     <div class="mb-3">
       <label for="desc" class="form-label">Description</label>
       <textarea name="desc" class="form-control" id="desc" cols="30" rows="5">{{old('desc') ?? $book->desc}}</textarea>
+      @error('desc')
+            <small class="form-text text-danger">{{$message}}</small>
+      @enderror
     </div>
     <div class="mb-3">
       <label for="img" class="form-label">Img</label>
       <input class="form-control" type="file" id="img" value="{{old('img') ?? $book->img}}" name='img'>
+      @error('img')
+            <small class="form-text text-danger">{{$message}}</small>
+      @enderror
     </div>
     <p>Select Categories: </p>
     @foreach ($categories as $category)
@@ -34,6 +42,9 @@
       </label>
     </div>
     @endforeach
+    @error('categories_ids')
+            <small class="form-text text-danger">{{$message}}</small>
+    @enderror
     <br>
     <button type="submit" class="btn main-btn  ">Edit Book</button>
   </form>
