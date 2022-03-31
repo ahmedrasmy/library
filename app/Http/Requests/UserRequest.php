@@ -33,16 +33,16 @@ class UserRequest extends FormRequest
     public function messages()
     {
         return[
-            'name.required'     =>  __('site.name required'),
-            'name.string'       =>  __('site.name string'),
-            'name.max'          =>  __('site.name max'),
-            'email.required'    =>  __('site.email required'),
-            'email.string'      =>  __('site.email type'),
-            'email.max'         =>  __('site.email max'),
-            'password.required' =>  __('site.password required'),
-            'password.string'   =>  __('site.password string'),
-            'password.max'      =>  __('site.password max'),
-            'password.min'      =>  __('site.password min'),
+            'name.required'     =>  __('siteValid.name required'),
+            'name.string'       =>  __('siteValid.name string'),
+            'name.max'          =>  __('siteValid.name max'),
+            'email.required'    =>  __('siteValid.email required'),
+            'email.string'      =>  __('siteValid.email type'),
+            'email.max'         =>  __('siteValid.email max'),
+            'password.required' =>  __('siteValid.password required'),
+            'password.string'   =>  __('siteValid.password string'),
+            'password.max'      =>  __('siteValid.password max'),
+            'password.min'      =>  __('siteValid.password min'),
             
         ];
         

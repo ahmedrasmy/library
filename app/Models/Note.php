@@ -10,7 +10,7 @@ class Note extends Model
     use HasFactory;
     protected $fillable= 
     [
-        'content','user_id'
+        'content_en','content_ar','user_id'
     ];
 
     // note bbelongsTo one user

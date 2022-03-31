@@ -1,6 +1,6 @@
 @extends('layout')
 @section('title')
-    Home
+    {{__('site.home')}}
 @endsection
 @section('content')
  <!-- Start Landing  -->

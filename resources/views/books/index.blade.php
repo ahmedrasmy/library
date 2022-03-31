@@ -1,6 +1,6 @@
 @extends('layout')
 @section('title')
-    All Books
+{{__('site.All Books')}}    
 @endsection
 @section('content')
 <!-- Start Search -->
@@ -12,7 +12,7 @@
             class="w-100 text-light bg-transparent p-2 my-3"
             type="search"
             name="search" id="keyword"
-            placeholder="Enter Book Title"
+            placeholder="{{__('site.Enter Book Title')}}"
           />
         </div>
       </div>
@@ -22,14 +22,20 @@
   
     <div class="notebook">
         <div class="container">
+            
             <div class="row">
                 <div class="col-sm-6">
+                    @if (Session::has('success'))
+                        <div class="alert alert-success">
+                            {{Session::get('success')}}
+                        </div>
+                    @endif
                     <div class="main-title text-center mt-5 mb-5 position-relative">
                         <img class="mb-4" src="{{asset('imgs/title.png')}}" alt="" />
-                        <h2>All Books</h2>
+                        <h2>{{__('site.All Books')}}</h2>
                             @auth
                                 <div class="d-flex justify-content-center pb-2 pt-2">
-                                    <a class="btn rounded-pill main-btn text-uppercase" href="{{route('books.create')}}">Create</a>
+                                    <a class="btn rounded-pill main-btn text-uppercase" href="{{route('books.create')}}">{{__('site.Create')}}</a>
                                 </div>
                             @endauth
                       </div>
@@ -38,12 +44,19 @@
                 <div class="col-sm-6">
                     <div class="main-title text-center mt-5 mb-5 position-relative">
                         <img class="mb-4" src="{{asset('imgs/title.png')}}" alt="" />
-                        <h2>Notes</h2>
-                        @foreach(Auth::user()->notes as $note)
-                            <h3>{{ $note->content }}</h3>
-                        @endforeach
+                        <h2>{{__('site.Notes')}}</h2>
+                        @if (LaravelLocalization::getCurrentLocale() == 'en')
+                            @foreach(Auth::user()->notes as $note)
+                                <h3>{{ $note->content_en }}</h3>
+                            @endforeach
+                        @else
+                            @foreach(Auth::user()->notes as $note)
+                                <h3>{{ $note->content_ar }}</h3>
+                            @endforeach
+                        @endif
+                       
                             <div class="d-flex justify-content-center pb-2 pt-2">
-                                <a class="btn rounded-pill main-btn text-uppercase" href="{{route('notes.create')}}">Add New Note</a>
+                                <a class="btn rounded-pill main-btn text-uppercase" href="{{route('notes.create')}}">{{__('site.Add New Note')}}</a>
                             </div>
                     </div>
                 </div>
@@ -63,11 +76,11 @@
                 <div class="card-body text-center">
                     <h5 class="card-title"><a class="btn rounded-pill main-btn text-uppercase fw-bold" href="{{route('books.show',$book->id)}}">{{ $book->title }}</a></h5>
                     <span class="text-black-50 mb-5">{{ $book->desc}}</span><br><br>
-                    <a href="{{route('books.show',$book->id)}}" class="btn btn-primary">Show</a>
+                    <a href="{{route('books.show',$book->id)}}" class="btn btn-primary">{{__('site.Show')}}</a>
                     @auth 
-                        <a href="{{route('books.edit',$book->id)}}" class="btn btn-success">Edit</a>
+                        <a href="{{route('books.edit',$book->id)}}" class="btn btn-success">{{__('site.Edit')}}</a>
                         @if (Auth::user()->is_admin==1)
-                            <a href="{{route('books.delete',$book->id)}}" class="btn btn-danger">Delete</a>
+                            <a href="{{route('books.delete',$book->id)}}" class="btn btn-danger">{{__('site.Delete')}}</a>
                         @endif
                     @endauth
                 </div>
@@ -86,8 +99,12 @@
         let inputSearch = document.getElementById('keyword');
         var allBooks = document.getElementById('allBooks');
 
-        inputSearch.addEventListener("keyup", function(){
+        inputSearch.addEventListener("keyup", function(){        
                let keyword = inputSearch.value;
+               if(keyword == "")
+               {
+                     allBooks
+               }
                let url = "{{ route('books.search') }}" + "?keyword=" + keyword;
                let xhr = new XMLHttpRequest();
                xhr.open('GET', url, true);
@@ -98,16 +115,29 @@
                     var result = xhr.responseText;
                     var books  = JSON.parse(result);
                     var text="";
+                    if(books == "")
+                    {
+                        text=`<span class="text-danger text-center">{{__('site.no book')}}</span>`;
+                        allBooks.innerHTML=text;
+                    }
+                    
                     for(let book of books)
                     {   
+                        
                          text=`
                          <div class="col-md-6 col-lg-4 mb-3">
                             <div class="card">
-                            <img src="uploads/books/${book.img}" class="card-img-top" alt="Book" />
+                            <img src="/uploads/books/${book.img}" class="card-img-top" alt="Book" />
                             <div class="card-body text-center">
                                 <h5 class="card-title"><a class="btn rounded-pill main-btn text-uppercase fw-bold" href="#">${book.title}</a></h5>
                                 <span class="text-black-50 mb-5">${book.desc}</span><br><br>
-
+                            <a href="/books/show/${book.id}" class="btn btn-primary">{{__('site.Show')}}</a>
+                            @auth 
+                                <a href="/books/edit/${book.id}" class="btn btn-success">{{__('site.Edit')}}</a>
+                                @if (Auth::user()->is_admin==1)
+                                    <a href="/books/delete/${book.id}" class="btn btn-danger">{{__('site.Delete')}}</a>
+                                @endif
+                            @endauth
                             </div>
                         </div>
                         </div>`;

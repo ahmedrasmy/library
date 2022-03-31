@@ -1,6 +1,6 @@
 @extends('layout')
 @section('title')
-    All Categories
+   {{__('site.All Categories')}} 
 @endsection
 @section('content')
 <!-- Start Category  -->
@@ -8,7 +8,7 @@
     <div class="container">
       <div class="main-title text-center mt-5 mb-5 position-relative">
         <img class="mb-4" src="{{asset('imgs/title.png')}}" alt="" />
-        <h2>All Categories</h2>
+        <h2>{{__('site.All Categories')}}</h2>
             @auth
                 <div class="d-flex justify-content-center pb-2 pt-2">
                     <a class="btn rounded-pill main-btn text-uppercase" href="{{route('categories.create')}}">Create</a>
@@ -22,11 +22,11 @@
                 <div class="card-body text-center">
                     <h5 class="card-title"><a class="btn rounded-pill main-btn mb-3 fw-bold" href="{{route('categories.show',$category->id)}}">{{ $category->name }}</a></h5>
 
-                    <a href="{{route('categories.show',$category->id)}}" class="btn btn-primary">Show</a>
+                    <a href="{{route('categories.show',$category->id)}}" class="btn btn-primary">{{__('site.Show')}}</a>
                     @auth
-                        <a href="{{route('categories.edit',$category->id)}}" class="btn btn-success">Edit</a>
+                        <a href="{{route('categories.edit',$category->id)}}" class="btn btn-success">{{__('site.Edit')}}</a>
                         @if (Auth::user()->is_admin==1)
-                            <a href="{{route('categories.delete',$category->id)}}" class="btn btn-danger">Delete</a>
+                            <a href="{{route('categories.delete',$category->id)}}" class="btn btn-danger">{{__('site.Delete')}}</a>
                         @endif
                     @endauth
                 </div>

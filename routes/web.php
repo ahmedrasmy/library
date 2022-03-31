@@ -133,7 +133,7 @@ Route::group(
     });
 
     // Login With Github or facebook
-    Route::prefix('/index/login/{service}')->controller(AuthController::class)->group(function(){
+    Route::prefix('/login/{service}')->controller(AuthController::class)->group(function(){
         Route::get('/redirect','redirectSocialite');
         Route::get('/callback','callbackSocialite');
 

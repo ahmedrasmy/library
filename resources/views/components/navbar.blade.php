@@ -27,7 +27,7 @@
           <div class="dropdown mt-2">
             <button  class="btn btn-secondary bg-transparent nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">{{ __('site.cats') }}</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item " href="{{ route('categories.index') }}">All Categories </a></li>            
+                <li><a class="dropdown-item " href="{{ route('categories.index') }}">{{__('site.All Categories')}} </a></li>            
                 @foreach ($cats as $cat)
                     <li><a class="dropdown-item " href="{{route('categories.show',$cat->id)}}">{{$cat->name}}</a></li>            
                 @endforeach

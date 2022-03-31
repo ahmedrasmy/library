@@ -18,7 +18,8 @@ class NoteController extends Controller
        
         Note::create(
             [
-                'content' => $request->content,
+                'content_en' => $request->content_en,
+                'content_ar' => $request->content_ar,
                 'user_id' => Auth::user()->id,
             ]
         ) ; 

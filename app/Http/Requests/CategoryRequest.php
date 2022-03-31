@@ -24,16 +24,20 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|string|max:100',
+            'name_en'=>'required|string|max:100',
+            'name_ar'=>'required|string|max:100',
         ];
     }
 
     public function messages()
     {
         return[
-            'name.required' =>  __('site.name required'),
-            'name.string'   =>  __('site.name string'),
-            'name.max'      =>  __('site.name max'),
+            'name_en.required' =>  __('siteValid.name required'),
+            'name_en.string'   =>  __('siteValid.name string'),
+            'name_en.max'      =>  __('siteValid.name max'),
+            'name_ar.required' =>  __('siteValid.name required'),
+            'name_ar.string'   =>  __('siteValid.name string'),
+            'name_ar.max'      =>  __('siteValid.name max'),
         ];
     }
 }

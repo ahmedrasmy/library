@@ -24,8 +24,10 @@ class StoreBookRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>'required|string|max:100',
-            'desc'=>'required|string',
+            'title_en'=>'required|string|max:100',
+            'title_ar'=>'required|string|max:100',
+            'desc_en'=>'required|string',
+            'desc_ar'=>'required|string',
             'img' =>'required|image|mimes:jpg,bmp,png',
             'categories_ids' => 'required',
             'categories_ids.*' => 'exists:categories,id',
@@ -33,14 +35,19 @@ class StoreBookRequest extends FormRequest
     }
     public function messages(){
         return [
-            'title.required' => __('site.title required'),
-            'title.string' => __('site.title string'),
-            'title.max' => __('site.title max'),
-            'desc.required' => __('site.desc required'),
-            'desc.string' => __('site.desc string'),
-            'img.required' => __('site.img required'),
-            'img.image' => __('site.img image'),
-            'categories_ids.required' => __('site.categories ids'),
+            'title_en.required' => __('siteValid.title required'),
+            'title_en.string' => __('siteValid.title string'),
+            'title_en.max' => __('siteValid.title max'),
+            'title_ar.required' => __('siteValid.title required'),
+            'title_ar.string' => __('siteValid.title string'),
+            'title_ar.max' => __('siteValid.title max'),
+            'desc_en.required' => __('siteValid.desc required'),
+            'desc_en.string' => __('siteValid.desc string'),
+            'desc_ar.required' => __('siteValid.desc required'),
+            'desc_ar.string' => __('siteValid.desc string'),
+            'img.required' => __('siteValid.img required'),
+            'img.image' => __('siteValid.img image'),
+            'categories_ids.required' => __('siteValid.categories ids'),
 
         ];
     }

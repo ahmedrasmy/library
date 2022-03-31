@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use App\Models\Category;
 use Illuminate\View\Component;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class Navbar extends Component
 {
@@ -24,7 +25,10 @@ class Navbar extends Component
      */
     public function render()
     {
-        $cats = Category::get();
+        $cats = Category::select(
+            'id', 
+            'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
+            )->get();
         return view(
             'components.navbar',
             compact('cats')

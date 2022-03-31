@@ -24,14 +24,17 @@ class NoteRequest extends FormRequest
     public function rules()
     {
         return [
-            'content'=>'required|string'
+            'content_en'=>'required|string',
+            'content_ar'=>'required|string',
         ];
     }
     public function messages()
     {
         return [
-            'content.required' => __('site.content required'),
-            'content.string' => __('site.content string'),
+            'content_en.required' => __('siteValid.content required'),
+            'content_en.string' => __('siteValid.content string'),
+            'content_ar.required' => __('siteValid.content required'),
+            'content_ar.string' => __('siteValid.content string'),
 
         ];
     }

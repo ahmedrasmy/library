@@ -2,54 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBookRequest;
-use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
-use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
+use App\Http\Requests\StoreBookRequest;
+use App\Traits\BookTrait;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class BookController extends Controller
 {
-    //
+    use BookTrait;
+    
     public function home()
     {
         return view('index');
     }
     public function index(){
-        $books=Book::orderBy('id','DESC')->get();
+        $books=Book::select(
+            'id',
+            'title_' . LaravelLocalization::getCurrentLocale() . ' as title',
+            'desc_' . LaravelLocalization::getCurrentLocale() . ' as desc',
+            'img',
+        )->orderBy('id','DESC')->get();
 
         return view('books/index',compact('books'));
     }
     public function search(Request $request){
         $keyword=$request -> keyword;
-        $books=Book::where('title','like',"%$keyword%")->get();
+        $books=Book::select(
+            'id',
+            'title_' . LaravelLocalization::getCurrentLocale() . ' as title',
+            'desc_' . LaravelLocalization::getCurrentLocale() . ' as desc',
+            'img',
+        )->where('title_'. LaravelLocalization::getCurrentLocale(),
+        'like',"$keyword%")
+        ->get();
         return response()->json($books);
     }
     public function show($id){
-        $book =Book::findOrFail($id);
-
+        Book::findOrFail($id);
+        $book =Book::select(
+            'id',
+            'title_' . LaravelLocalization::getCurrentLocale() . ' as title',
+            'desc_' . LaravelLocalization::getCurrentLocale() . ' as desc',
+            'img',
+        )-> where('id',$id)->first();
         return view('books/show',compact('book'));
     }
     public function create(){
-        $categories=Category::select('id', 'name')->get();
+        $categories=Category::select(
+        'id', 
+        'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
+        )
+        ->get();
         return view('books/create' , compact('categories'));
     }
     public function store(StoreBookRequest $request){
 
         // Move Img to folder uplpads books 
-        $img=$request->file('img');
-        $ext=$img->getClientOriginalExtension();
-        $name="book- ". uniqid() .".$ext";
-        $img->move(public_path('uploads/books'),$name);
+        $name = $this->saveImage ($request->file('img') ,'uploads/books');
+
         // add to DB
         $book=Book::create(
         [
-            'title' => $request->title,
-            'desc'  => $request->desc,
+            'title_en' => $request->title_en,
+            'title_ar' => $request->title_ar,
+            'desc_en'  => $request->desc_en,
+            'desc_ar'  => $request->desc_ar,
             'img'   =>$name
         ]);
         $book->categories()->sync($request->categories_ids);
@@ -58,10 +77,13 @@ class BookController extends Controller
     }
     public function edit($id){
         $book =Book::findOrFail($id);
-        $categories=Category::select('id', 'name')->get();
+        $categories=Category::select(
+            'id', 
+            'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
+            )->get();
         return view('books/edit',compact('book','categories'));
     }
-    public function update(UpdateBookRequest $request,$id){
+    public function update(StoreBookRequest $request,$id){
         
         $book=Book::findOrFail($id);
         $name=$book->img;
@@ -70,15 +92,15 @@ class BookController extends Controller
             if($name !== null){
                 unlink(public_path('uploads/books/').$name);
             }
-            $img=$request->file('img');
-            $ext=$img->getClientOriginalExtension();
-            $name="book- ". uniqid() .".$ext";
-            $img->move(public_path('uploads/books'),$name);
+            $name = $this->saveImage ($request->file('img') ,'uploads/books');
+
         }
         
         $book->update([
-            'title'=>$request->title,
-            'desc'=>$request->desc,
+            'title_en' => $request->title_en,
+            'title_ar' => $request->title_ar,
+            'desc_en'  => $request->desc_en,
+            'desc_ar'  => $request->desc_ar,
             'img'=>$name
         ]);
         $book->categories()->sync($request->categories_ids);
@@ -91,8 +113,10 @@ class BookController extends Controller
             unlink(public_path('uploads/books/').$book->img);
         }
         $book->delete();
-        return redirect(route('books.index'));
+        return redirect(route('books.index'))->with('success',__('site.Deleted Successfully'));
     }
+
+    
     
 }
 

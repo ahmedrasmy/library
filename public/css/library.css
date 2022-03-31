@@ -88,3 +88,16 @@
 .form {
     background-color: #eee;
 }
+
+.login-with ul li svg {
+    width: 25px;
+    height: 25px;
+}
+
+.login-with .facebook {
+    background-color: #1877f2;
+}
+
+.login-with .github {
+    background-color: black;
+}
