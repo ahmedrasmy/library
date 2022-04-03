@@ -14,7 +14,7 @@ class CategoryController extends Controller
         $categories=Category::select(
             'id', 
             'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
-            )->orderBy('id','DESC')->get();
+            )->orderBy('id','DESC')->paginate(3);
 
         return view('categories/index',compact('categories'));
     }

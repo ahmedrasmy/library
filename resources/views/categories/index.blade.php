@@ -37,4 +37,11 @@
     </div>
   </div>
   <!-- End Category  -->
+  {{-- Start pagination  --}}
+  <div class="d-flex justify-content-center">
+    {!! $categories->links() !!}
+  </div>
+ 
+  {{-- End pagination  --}}
+
 @endsection

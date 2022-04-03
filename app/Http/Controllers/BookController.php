@@ -23,7 +23,7 @@ class BookController extends Controller
             'title_' . LaravelLocalization::getCurrentLocale() . ' as title',
             'desc_' . LaravelLocalization::getCurrentLocale() . ' as desc',
             'img',
-        )->orderBy('id','DESC')->get();
+        )->orderBy('id','DESC')->paginate(6);
 
         return view('books/index',compact('books'));
     }

@@ -91,6 +91,12 @@
     </div>
   </div>
   <!-- End Book  -->
+  {{-- Start pagination  --}}
+  <div class="d-flex justify-content-center">
+    {!! $books->links() !!}
+  </div>
+ 
+  {{-- End pagination  --}}
 
 @endsection
 
